@@ -1,0 +1,10 @@
+{
+  "name": "formstack",
+  "description": "Meteor wrapper for Formstack's REST API. Plus a bag o' tricks.",
+  "homepage": "https://github.com/iameli/meteor-formstack",
+  "author": "Eli Mallon (http://iame.li/)",
+  "version": "0.0.1",
+  "git": "https://github.com/iameli/meteor-formstack.git",
+  "packages": {
+  }
+}
