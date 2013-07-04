@@ -1,4 +1,4 @@
 meteor-formstack
 ================
 
-Wrapper for Formstack's REST API for Meteor.
+Meteor wrapper for Formstack's REST API. Plus a bag o' tricks.

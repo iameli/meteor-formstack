@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "formstack": {
+        "path": "."
+      }
+    },
+    "packages": {
+      "formstack": {
+        "path": "."
+      }
+    }
+  }
+}
