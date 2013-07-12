@@ -13,8 +13,8 @@ do (root=theRoot) ->
   # int. This function hacks around this, makes sure it's always cast to an int.
   fixParams = (data) ->
     if data.success?
-      if typeof data.success == 'string'
-        data.success = parseInt(data.success)
+      if typeof data.success == 'number'
+        data.success = "" + data.success
     return data
   root.Formstack = class Formstack
     #
@@ -24,6 +24,11 @@ do (root=theRoot) ->
     constructor: (params) ->
       @token = params.token
       @authHeader = {"Authorization": "Bearer " + @token}
+      
+    #   
+    # FORMS
+    #
+    
     #
     # Return a list of all forms.
     #
@@ -33,8 +38,8 @@ do (root=theRoot) ->
     #
     # Get a singlular form.
     #
-    getForm: (id) ->
-      resp = Meteor.http.call "GET", url('form/'+id), headers: @authHeader
+    getForm: (form_id) ->
+      resp = Meteor.http.call "GET", url("form/#{form_id}"), headers: @authHeader
       return fixParams(resp.data)
     #
     # Create form
@@ -47,22 +52,104 @@ do (root=theRoot) ->
     # Modify form
     # Params are the same here
     #
-    modifyForm: (id, params) ->
-      resp = Meteor.http.call "PUT", url('form/'+id), {headers: @authHeader, data: params}
+    modifyForm: (form_id, params) ->
+      resp = Meteor.http.call "PUT", url("form/#{form_id}"), {headers: @authHeader, data: params}
       return fixParams(resp.data)
     #
     # Delete form
     # params.id = id of form to delete
     #
-    deleteForm: (id) ->
-      resp = Meteor.http.call "DELETE", url('form/'+id), headers: @authHeader
+    deleteForm: (form_id) ->
+      resp = Meteor.http.call "DELETE", url("form/#{form_id}"), headers: @authHeader
       return fixParams(resp.data)
     #
     # Duplicate form
     # id
     # Returns an object with the id of the new form
     #
-    copyForm: (id) -> 
-      resp = Meteor.http.call "POST", url('form/'+id+'/copy'), headers: @authHeader
+    copyForm: (form_id) -> 
+      resp = Meteor.http.call "POST", url("form/#{form_id}/copy"), headers: @authHeader
+      return fixParams(resp.data)
+      
+    #
+    # FIELDS
+    #
+    
+    #
+    # Get all fields for a specified form.
+    #
+    getFields: (form_id) ->
+      resp = Meteor.http.call "GET", url("form/#{form_id}/field"), headers: @authHeader
+      return fixParams(resp.data)
+    #
+    # Create a new field for the specified form
+    #
+    createField: (form_id, params) ->
+      resp = Meteor.http.call "POST", url("form/#{form_id}/field"), {data: params, headers: @authHeader}
+      return fixParams(resp.data)
+    #
+    # Get the details of a specific field
+    #
+    getField: (field_id) ->
+      resp = Meteor.http.call "GET", url("field/#{field_id}"), headers: @authHeader
+      return fixParams(resp.data)
+    #
+    # Update the specified field
+    #
+    modifyField: (field_id, params) ->
+      resp = Meteor.http.call "PUT", url("field/#{field_id}"), {data: params, headers: @authHeader}
+      return fixParams(resp.data)
+    #
+    # Delete the specified field
+    #
+    deleteField: (field_id) ->
+      resp = Meteor.http.call "DELETE", url("field/#{field_id}"), headers: @authHeader
+      return fixParams(resp.data)
+      
+    #
+    # SUBMISSIONS
+    #
+    
+    #
+    # Get all submissions for a specific form.
+    #
+    getSubmissions: (form_id) ->
+      resp = Meteor.http.call "GET", url("form/#{form_id}/submission"), headers: @authHeader
+      return fixParams(resp.data)
+      
+    #
+    # Create a new submission for the specified form
+    #
+    createSubmission: (form_id, params) ->
+      my_url = url "form/#{form_id}/submission"
+      resp = Meteor.http.call "POST", url("form/#{form_id}/submission"),
+        headers: @authHeader
+        data: params
       return fixParams(resp.data)
     
+    #
+    # Get the details of a specific submission
+    #
+    getSubmission: (submission_id) ->
+      resp = Meteor.http.call "GET", url("submission/#{submission_id}"), headers: @authHeader
+      return fixParams(resp.data)
+      
+    #
+    # Update the specified submission
+    #
+    modifySubmission: (submission_id, params) ->
+      resp = Meteor.http.call "PUT", url("submission/#{submission_id}"),
+        headers: @authHeader
+        data: params
+      return fixParams(resp.data)
+      
+    #
+    # Delete the specified submission
+    #
+    deleteSubmission: (submission_id, params) ->
+      resp = Meteor.http.call "DELETE", url("submission/#{submission_id}"), headers: @authHeader
+      return fixParams(resp.data)
+      
+      
+      
+      

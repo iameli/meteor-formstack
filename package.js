@@ -4,11 +4,13 @@ Package.describe({
 
 Package.on_use(function (api){
   api.use('coffeescript', 'server');
+  api.use('underscore', 'server');
 	api.add_files('lib/formstack.coffee', 'server');
 });
 
 Package.on_test(function (api) {
   api.use('coffeescript', 'server');
+  api.use('underscore', 'server');
   api.use('http', 'server');
   api.add_files('lib/formstack.coffee', 'server');
   api.add_files('tests/test.coffee', 'server')
